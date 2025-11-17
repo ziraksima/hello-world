@@ -7,6 +7,13 @@ defined( 'ABSPATH' ) || exit;
 
 class Restaurant_Menu_Plugin {
     /**
+     * Admin handler instance.
+     *
+     * @var Restaurant_Menu_Admin|null
+     */
+    protected $admin = null;
+
+    /**
      * Singleton instance.
      *
      * @var Restaurant_Menu_Plugin|null
@@ -40,7 +47,10 @@ class Restaurant_Menu_Plugin {
      * @return void
      */
     public function init() {
-        // Placeholder for loading admin/public components and other runtime hooks.
+        if ( is_admin() ) {
+            $this->admin = new Restaurant_Menu_Admin();
+            $this->admin->register_hooks();
+        }
     }
 
     /**
