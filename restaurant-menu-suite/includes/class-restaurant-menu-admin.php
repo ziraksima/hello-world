@@ -13,6 +13,10 @@ class Restaurant_Menu_Admin {
      */
     public function register_hooks() {
         add_action( 'admin_menu', array( $this, 'register_menu_page' ) );
+        add_filter(
+            'plugin_action_links_' . plugin_basename( RESTAURANT_MENU_SUITE_PLUGIN_FILE ),
+            array( $this, 'add_plugin_action_links' )
+        );
     }
 
     /**
@@ -30,6 +34,31 @@ class Restaurant_Menu_Admin {
             'dashicons-carrot',
             26
         );
+    }
+
+    /**
+     * Add quick access links on the Plugins screen.
+     *
+     * @param array $links Existing plugin action links.
+     *
+     * @return array
+     */
+    public function add_plugin_action_links( $links ) {
+        $menu_url   = admin_url( 'admin.php?page=restaurant-menu-suite' );
+        $settings   = sprintf(
+            '<a href="%1$s">%2$s</a>',
+            esc_url( $menu_url ),
+            esc_html__( 'Settings', 'restaurant-menu-suite' )
+        );
+        $docs       = sprintf(
+            '<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+            esc_url( 'https://example.com/restaurant-menu-suite' ),
+            esc_html__( 'Docs', 'restaurant-menu-suite' )
+        );
+
+        array_unshift( $links, $settings, $docs );
+
+        return $links;
     }
 
     /**
